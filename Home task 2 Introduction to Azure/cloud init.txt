@@ -1,0 +1,6 @@
+#!/bin/bash
+yum -y update
+yum -y install httpd
+echo "<html><body><center><h1><p><font color=blue>az-vm-httpd-1</h1></center></body></html>" > /var/www/html/index.html
+sudo service httpd start
+chkconfig httpd on

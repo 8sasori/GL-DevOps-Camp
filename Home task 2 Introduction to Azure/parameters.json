@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "natGateways_az_nat_default_name": {
+            "value": null
+        },
+        "bastionHosts_az_bastionhost_name": {
+            "value": null
+        },
+        "publicIPAddresses_az_nat_ip_name": {
+            "value": null
+        },
+        "virtualMachines_az_vm_httpd_1_name": {
+            "value": null
+        },
+        "virtualMachines_az_vm_httpd_2_name": {
+            "value": null
+        },
+        "sshPublicKeys_az_vm_httpd_2_key_name": {
+            "value": null
+        },
+        "loadBalancers_az_balancer_httpd_name": {
+            "value": null
+        },
+        "virtualNetworks_az_vnet_default_name": {
+            "value": null
+        },
+        "networkInterfaces_az_vm_httpd_1480_name": {
+            "value": null
+        },
+        "networkInterfaces_az_vm_httpd_2546_name": {
+            "value": null
+        },
+        "sshPublicKeys_az_vm_httpd_1_ssh_key_name": {
+            "value": null
+        },
+        "publicIPAddresses_az_ip_bastionhost_name": {
+            "value": null
+        },
+        "networkSecurityGroups_az_vm_httpd_nsg_name": {
+            "value": null
+        },
+        "publicIPAddresses_az_public_ip_balancer_name": {
+            "value": null
+        }
+    }
+}

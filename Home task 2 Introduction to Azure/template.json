@@ -1,0 +1,681 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "natGateways_az_nat_default_name": {
+            "defaultValue": "az-nat-default",
+            "type": "String"
+        },
+        "bastionHosts_az_bastionhost_name": {
+            "defaultValue": "az-bastionhost",
+            "type": "String"
+        },
+        "publicIPAddresses_az_nat_ip_name": {
+            "defaultValue": "az-nat-ip",
+            "type": "String"
+        },
+        "virtualMachines_az_vm_httpd_1_name": {
+            "defaultValue": "az-vm-httpd-1",
+            "type": "String"
+        },
+        "virtualMachines_az_vm_httpd_2_name": {
+            "defaultValue": "az-vm-httpd-2",
+            "type": "String"
+        },
+        "sshPublicKeys_az_vm_httpd_2_key_name": {
+            "defaultValue": "az-vm-httpd-2_key",
+            "type": "String"
+        },
+        "loadBalancers_az_balancer_httpd_name": {
+            "defaultValue": "az-balancer-httpd",
+            "type": "String"
+        },
+        "virtualNetworks_az_vnet_default_name": {
+            "defaultValue": "az-vnet-default",
+            "type": "String"
+        },
+        "networkInterfaces_az_vm_httpd_1480_name": {
+            "defaultValue": "az-vm-httpd-1480",
+            "type": "String"
+        },
+        "networkInterfaces_az_vm_httpd_2546_name": {
+            "defaultValue": "az-vm-httpd-2546",
+            "type": "String"
+        },
+        "sshPublicKeys_az_vm_httpd_1_ssh_key_name": {
+            "defaultValue": "az-vm-httpd-1_ssh_key",
+            "type": "String"
+        },
+        "publicIPAddresses_az_ip_bastionhost_name": {
+            "defaultValue": "az-ip-bastionhost",
+            "type": "String"
+        },
+        "networkSecurityGroups_az_vm_httpd_nsg_name": {
+            "defaultValue": "az-vm-httpd-nsg",
+            "type": "String"
+        },
+        "publicIPAddresses_az_public_ip_balancer_name": {
+            "defaultValue": "az-public-ip-balancer",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Compute/sshPublicKeys",
+            "apiVersion": "2022-08-01",
+            "name": "[parameters('sshPublicKeys_az_vm_httpd_1_ssh_key_name')]",
+            "location": "westeurope",
+            "properties": {
+                "publicKey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDwQ2/aDGHCWfRq86L5XYFI8cZUXImlfg6Dx7fTfZvYZzj60zj2zSMQ2UEGGKWKXA0hF/PHQP4xhlXeQHGGVzjjM6/NQWKF9Q7BK1ob6gh2U4T9QaPzo2dlbEjaOYUGr1qlxD/OSaDnU7kPb4jZKwUVTDiRnHJHtCumhLLRfI0CxaqI9kYiAs4/RBzYaObgA3TxhRsbjcaUmYFqZEl5dBE1jmr2kKNfszXnoLrRt051uqASkic62PzpxIVHim+3rgUk8tao99EJj0WKSIYfSa4NLVm0FOsERrGu4P9DyhfWHtC+Uau0KJ7J2Qrd3KiKr/goyC2diwVR+8u471cSVyiy2pVMrn+fqsZSLVnrJFf/6p6LB8pi++8bGOx7FuCVWScF1IHf/cMcIxSedBNE2Jn3YcmTcLO1R93vtiF/rUdZAvN9qLdJz8e2JGCKRFsZQbzy94D17DzprHBojuNNnAVOV4cTkV6raisZjiX5Tgz7sabuHXAciheYQsT7zVZaeoE= generated-by-azure"
+            }
+        },
+        {
+            "type": "Microsoft.Compute/sshPublicKeys",
+            "apiVersion": "2022-08-01",
+            "name": "[parameters('sshPublicKeys_az_vm_httpd_2_key_name')]",
+            "location": "westeurope",
+            "properties": {
+                "publicKey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/PfAg7xOTnL9WSxjfr9Muvlc4S/jU5j5DVM2uvVBN6l5KUqXPvhacg6hy74u4ulUFZ8qlp3aHcVP3fKzyfE0e95lobYhi5Pqgv/Jk9vex87e3FkAlaKjy0m++TF2wMcuR3tEebPGCGH7JCo0mFAPXlX9ZcDDympn3RdoWa0ReYfKKignQ5mDn0JxlzwIgjTbHf9m6tQ4GXFn8V1gCGdqTmKpA8l897pyQ37Ug0xPR2hdk7SZ9j7+ZP0YMgW55tIsq+iI0fEeZ2o9t6j2greWRQ42BCAU1DKO4K/2OP60rEy8gOU6A5ALqth0mVrZSIOFG9cZbJQ/0EoRE2+hkAQ7zrfZ9n70IfS+YaJAR5MKzwYJsQuPqKWt7CdEatNJh9csNX2/BpxvaabmYJieR9RZ/HguRRiBp4fz17JgZeoXnVmUPN/qD+DQHlVyWOK76BY5TqNQh2ACmEHLGvHAK/68+IieaU1iJDlFv0K1f4sPCO8uoeKeNpFaCt19Fr+hHIzE= generated-by-azure"
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('publicIPAddresses_az_ip_bastionhost_name')]",
+            "location": "westeurope",
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "properties": {
+                "ipAddress": "40.113.138.50",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('publicIPAddresses_az_public_ip_balancer_name')]",
+            "location": "westeurope",
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "properties": {
+                "ipAddress": "20.101.74.84",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2022-08-01",
+            "name": "[parameters('virtualMachines_az_vm_httpd_1_name')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_az_vm_httpd_1480_name'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_B1s"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "OpenLogic",
+                        "offer": "CentOS",
+                        "sku": "7_9-gen2",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Linux",
+                        "name": "[concat(parameters('virtualMachines_az_vm_httpd_1_name'), '_OsDisk_1_fa7a05dcc811416980091fbf552d6157')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "StandardSSD_LRS",
+                            "id": "[resourceId('Microsoft.Compute/disks', concat(parameters('virtualMachines_az_vm_httpd_1_name'), '_OsDisk_1_fa7a05dcc811416980091fbf552d6157'))]"
+                        },
+                        "deleteOption": "Delete",
+                        "diskSizeGB": 30
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_az_vm_httpd_1_name')]",
+                    "adminUsername": "azureuser",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": true,
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "path": "/home/azureuser/.ssh/authorized_keys",
+                                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDwQ2/aDGHCWfRq86L5XYFI8cZUXImlfg6Dx7fTfZvYZzj60zj2zSMQ2UEGGKWKXA0hF/PHQP4xhlXeQHGGVzjjM6/NQWKF9Q7BK1ob6gh2U4T9QaPzo2dlbEjaOYUGr1qlxD/OSaDnU7kPb4jZKwUVTDiRnHJHtCumhLLRfI0CxaqI9kYiAs4/RBzYaObgA3TxhRsbjcaUmYFqZEl5dBE1jmr2kKNfszXnoLrRt051uqASkic62PzpxIVHim+3rgUk8tao99EJj0WKSIYfSa4NLVm0FOsERrGu4P9DyhfWHtC+Uau0KJ7J2Qrd3KiKr/goyC2diwVR+8u471cSVyiy2pVMrn+fqsZSLVnrJFf/6p6LB8pi++8bGOx7FuCVWScF1IHf/cMcIxSedBNE2Jn3YcmTcLO1R93vtiF/rUdZAvN9qLdJz8e2JGCKRFsZQbzy94D17DzprHBojuNNnAVOV4cTkV6raisZjiX5Tgz7sabuHXAciheYQsT7zVZaeoE= generated-by-azure"
+                                }
+                            ]
+                        },
+                        "provisionVMAgent": true,
+                        "patchSettings": {
+                            "patchMode": "ImageDefault",
+                            "assessmentMode": "ImageDefault"
+                        },
+                        "enableVMAgentPlatformUpdates": false
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true,
+                    "requireGuestProvisionSignal": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_az_vm_httpd_1480_name'))]",
+                            "properties": {
+                                "deleteOption": "Delete"
+                            }
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2022-08-01",
+            "name": "[parameters('virtualMachines_az_vm_httpd_2_name')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_az_vm_httpd_2546_name'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_B1s"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "OpenLogic",
+                        "offer": "CentOS",
+                        "sku": "7_9-gen2",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Linux",
+                        "name": "[concat(parameters('virtualMachines_az_vm_httpd_2_name'), '_OsDisk_1_c0018f2fe24647adbf1242b95fd234fb')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "StandardSSD_LRS",
+                            "id": "[resourceId('Microsoft.Compute/disks', concat(parameters('virtualMachines_az_vm_httpd_2_name'), '_OsDisk_1_c0018f2fe24647adbf1242b95fd234fb'))]"
+                        },
+                        "deleteOption": "Delete",
+                        "diskSizeGB": 30
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_az_vm_httpd_2_name')]",
+                    "adminUsername": "azureuser",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": true,
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "path": "/home/azureuser/.ssh/authorized_keys",
+                                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/PfAg7xOTnL9WSxjfr9Muvlc4S/jU5j5DVM2uvVBN6l5KUqXPvhacg6hy74u4ulUFZ8qlp3aHcVP3fKzyfE0e95lobYhi5Pqgv/Jk9vex87e3FkAlaKjy0m++TF2wMcuR3tEebPGCGH7JCo0mFAPXlX9ZcDDympn3RdoWa0ReYfKKignQ5mDn0JxlzwIgjTbHf9m6tQ4GXFn8V1gCGdqTmKpA8l897pyQ37Ug0xPR2hdk7SZ9j7+ZP0YMgW55tIsq+iI0fEeZ2o9t6j2greWRQ42BCAU1DKO4K/2OP60rEy8gOU6A5ALqth0mVrZSIOFG9cZbJQ/0EoRE2+hkAQ7zrfZ9n70IfS+YaJAR5MKzwYJsQuPqKWt7CdEatNJh9csNX2/BpxvaabmYJieR9RZ/HguRRiBp4fz17JgZeoXnVmUPN/qD+DQHlVyWOK76BY5TqNQh2ACmEHLGvHAK/68+IieaU1iJDlFv0K1f4sPCO8uoeKeNpFaCt19Fr+hHIzE= generated-by-azure"
+                                }
+                            ]
+                        },
+                        "provisionVMAgent": true,
+                        "patchSettings": {
+                            "patchMode": "ImageDefault",
+                            "assessmentMode": "ImageDefault"
+                        },
+                        "enableVMAgentPlatformUpdates": false
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true,
+                    "requireGuestProvisionSignal": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_az_vm_httpd_2546_name'))]",
+                            "properties": {
+                                "deleteOption": "Delete"
+                            }
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('loadBalancers_az_balancer_httpd_name'), '/az-backendpool-httpd')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_az_balancer_httpd_name'))]"
+            ],
+            "properties": {
+                "loadBalancerBackendAddresses": [
+                    {
+                        "name": "az-rgroup-httpd_az-vm-httpd-1480ipconfig1",
+                        "properties": {}
+                    },
+                    {
+                        "name": "az-rgroup-httpd_az-vm-httpd-2546ipconfig1",
+                        "properties": {}
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/natGateways",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('natGateways_az_nat_default_name')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_az_nat_ip_name'))]"
+            ],
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "properties": {
+                "idleTimeoutInMinutes": 4,
+                "publicIpAddresses": [
+                    {
+                        "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_az_nat_ip_name'))]"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('networkSecurityGroups_az_vm_httpd_nsg_name')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_az_vm_httpd_nsg_name'), 'AllowAnyHTTPInbound')]"
+            ],
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "AllowAnyHTTPInbound",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_az_vm_httpd_nsg_name'), 'AllowAnyHTTPInbound')]",
+                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                        "properties": {
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "80",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('networkSecurityGroups_az_vm_httpd_nsg_name'), '/AllowAnyHTTPInbound')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_az_vm_httpd_nsg_name'))]"
+            ],
+            "properties": {
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "destinationPortRange": "80",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 100,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('publicIPAddresses_az_nat_ip_name')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/natGateways', parameters('natGateways_az_nat_default_name'))]"
+            ],
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "properties": {
+                "natGateway": {
+                    "id": "[resourceId('Microsoft.Network/natGateways', parameters('natGateways_az_nat_default_name'))]"
+                },
+                "ipAddress": "40.68.3.221",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('virtualNetworks_az_vnet_default_name'), '/AzureBastionSubnet')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_az_vnet_default_name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "10.10.1.0/26",
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/bastionHosts",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('bastionHosts_az_bastionhost_name')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_az_ip_bastionhost_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_az_vnet_default_name'), 'AzureBastionSubnet')]"
+            ],
+            "sku": {
+                "name": "Basic"
+            },
+            "properties": {
+                "dnsName": "bst-73b3f8a3-8157-4191-9f1f-18b743571feb.bastion.azure.com",
+                "scaleUnits": 2,
+                "ipConfigurations": [
+                    {
+                        "name": "IpConf",
+                        "id": "[concat(resourceId('Microsoft.Network/bastionHosts', parameters('bastionHosts_az_bastionhost_name')), '/bastionHostIpConfigurations/IpConf')]",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_az_ip_bastionhost_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_az_vnet_default_name'), 'AzureBastionSubnet')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('loadBalancers_az_balancer_httpd_name')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_az_public_ip_balancer_name'))]",
+                "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('loadBalancers_az_balancer_httpd_name'), 'az-backendpool-httpd')]"
+            ],
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "properties": {
+                "frontendIPConfigurations": [
+                    {
+                        "name": "az-frontend-ip-balancer",
+                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_az_balancer_httpd_name')), '/frontendIPConfigurations/az-frontend-ip-balancer')]",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_az_public_ip_balancer_name'))]"
+                            }
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "az-backendpool-httpd",
+                        "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('loadBalancers_az_balancer_httpd_name'), 'az-backendpool-httpd')]",
+                        "properties": {
+                            "loadBalancerBackendAddresses": [
+                                {
+                                    "name": "az-rgroup-httpd_az-vm-httpd-1480ipconfig1",
+                                    "properties": {}
+                                },
+                                {
+                                    "name": "az-rgroup-httpd_az-vm-httpd-2546ipconfig1",
+                                    "properties": {}
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "az-rule-balancer-http",
+                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_az_balancer_httpd_name')), '/loadBalancingRules/az-rule-balancer-http')]",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_az_balancer_httpd_name')), '/frontendIPConfigurations/az-frontend-ip-balancer')]"
+                            },
+                            "frontendPort": 80,
+                            "backendPort": 80,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "enableTcpReset": true,
+                            "loadDistribution": "Default",
+                            "disableOutboundSnat": true,
+                            "backendAddressPool": {
+                                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('loadBalancers_az_balancer_httpd_name'), 'az-backendpool-httpd')]"
+                            },
+                            "backendAddressPools": [
+                                {
+                                    "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('loadBalancers_az_balancer_httpd_name'), 'az-backendpool-httpd')]"
+                                }
+                            ],
+                            "probe": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_az_balancer_httpd_name')), '/probes/az-balancer-healtg-probe')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "az-balancer-healtg-probe",
+                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_az_balancer_httpd_name')), '/probes/az-balancer-healtg-probe')]",
+                        "properties": {
+                            "protocol": "Http",
+                            "port": 80,
+                            "requestPath": "/",
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 1,
+                            "probeThreshold": 1
+                        }
+                    }
+                ],
+                "inboundNatRules": [],
+                "outboundRules": [],
+                "inboundNatPools": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('virtualNetworks_az_vnet_default_name'), '/az-backend-subnet')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_az_vnet_default_name'))]",
+                "[resourceId('Microsoft.Network/natGateways', parameters('natGateways_az_nat_default_name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "10.10.0.0/28",
+                "natGateway": {
+                    "id": "[resourceId('Microsoft.Network/natGateways', parameters('natGateways_az_nat_default_name'))]"
+                },
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('networkInterfaces_az_vm_httpd_1480_name')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_az_vnet_default_name'), 'az-backend-subnet')]",
+                "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('loadBalancers_az_balancer_httpd_name'), 'az-backendpool-httpd')]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_az_vm_httpd_nsg_name'))]"
+            ],
+            "kind": "Regular",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "id": "[concat(resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_az_vm_httpd_1480_name')), '/ipConfigurations/ipconfig1')]",
+                        "etag": "W/\"7ce60e0f-d25e-4a0b-9b64-73d8b0e1aa75\"",
+                        "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "10.10.0.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_az_vnet_default_name'), 'az-backend-subnet')]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4",
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('loadBalancers_az_balancer_httpd_name'), 'az-backendpool-httpd')]"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "disableTcpStateTracking": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_az_vm_httpd_nsg_name'))]"
+                },
+                "nicType": "Standard"
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('networkInterfaces_az_vm_httpd_2546_name')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_az_vnet_default_name'), 'az-backend-subnet')]",
+                "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('loadBalancers_az_balancer_httpd_name'), 'az-backendpool-httpd')]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_az_vm_httpd_nsg_name'))]"
+            ],
+            "kind": "Regular",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "id": "[concat(resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_az_vm_httpd_2546_name')), '/ipConfigurations/ipconfig1')]",
+                        "etag": "W/\"d9aff644-a2a4-48e8-a718-04b9ef86bcdb\"",
+                        "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "10.10.0.5",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_az_vnet_default_name'), 'az-backend-subnet')]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4",
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('loadBalancers_az_balancer_httpd_name'), 'az-backendpool-httpd')]"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "disableTcpStateTracking": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_az_vm_httpd_nsg_name'))]"
+                },
+                "nicType": "Standard"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('virtualNetworks_az_vnet_default_name')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_az_vnet_default_name'), 'az-backend-subnet')]",
+                "[resourceId('Microsoft.Network/natGateways', parameters('natGateways_az_nat_default_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_az_vnet_default_name'), 'AzureBastionSubnet')]"
+            ],
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.10.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "az-backend-subnet",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_az_vnet_default_name'), 'az-backend-subnet')]",
+                        "properties": {
+                            "addressPrefix": "10.10.0.0/28",
+                            "natGateway": {
+                                "id": "[resourceId('Microsoft.Network/natGateways', parameters('natGateways_az_nat_default_name'))]"
+                            },
+                            "delegations": [],
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Enabled"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                    },
+                    {
+                        "name": "AzureBastionSubnet",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_az_vnet_default_name'), 'AzureBastionSubnet')]",
+                        "properties": {
+                            "addressPrefix": "10.10.1.0/26",
+                            "delegations": [],
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Enabled"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false
+            }
+        }
+    ]
+}
